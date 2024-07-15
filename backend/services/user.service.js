@@ -1,6 +1,7 @@
 const { default: axios } = require("axios");
 const User = require("../model/user");
 const qs = require("qs");
+require("dotenv").config({ path: ".env.local" });
 
 async function googleOauthToken(code) {
   const url = "https://oauth2.googleapis.com/token";

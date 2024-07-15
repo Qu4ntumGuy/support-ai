@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-dotenv.config();
+require("dotenv").config({ path: ".env.local" });
 
 const mongoURL = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.vniyj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
