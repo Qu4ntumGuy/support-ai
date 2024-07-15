@@ -1,0 +1,36 @@
+const { MongoClient } = require("mongodb");
+const mongoose = require("mongoose");
+// const dotenv = require("dotenv");
+// dotenv.config();
+
+const mongoURL =
+  "mongodb+srv://Admin-Gaurav:Gaurav1709@cluster0.vniyj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+console.log(mongoURL);
+
+const connectDB = async () => {
+  try {
+    await mongoose.createConnection(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      dbName: "gen-ai",
+    });
+    console.log("MongoDB is connected");
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
+};
+
+// const client = new MongoClient(mongoURL);
+
+// async function connectToMongo() {
+//   try {
+//     await client.connect();
+//     await client.db("gen-ai").command({ ping: 1 });
+//     console.log("Connected to MongoDB");
+//   } catch (error) {
+//     console.error("Error connecting to MongoDB:", error);
+//   }
+// }
+
+module.exports = connectDB;
