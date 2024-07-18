@@ -16,13 +16,16 @@ function Home() {
 
   const createChat = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/userChat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await fetch(
+        `${process.env.REACT_APP_SERVER_ENDPOINT}/userChat`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       // console.log(res);
       const data = await res.json();
       console.log(data.chats[0]._id);
