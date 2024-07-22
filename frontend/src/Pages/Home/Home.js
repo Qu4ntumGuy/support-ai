@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../../Components/Sidebar";
 import Logout from "@mui/icons-material/Logout";
+import axios from "axios";
 
 function Home() {
   const [chatId, setChatId] = React.useState("");
@@ -19,14 +20,13 @@ function Home() {
       const res = await fetch(
         `${process.env.REACT_APP_SERVER_ENDPOINT}/userChat`,
         {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      // console.log(res);
       const data = await res.json();
       console.log(data.chats[0]._id);
       setChatId(data.chats[0]._id);

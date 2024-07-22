@@ -1,5 +1,6 @@
 const Chat = require("../model/chat");
 const Message = require("../model/message");
+const User = require("../model/user");
 jwt = require("jsonwebtoken");
 
 const fetchMessagesController = async (req, res) => {
@@ -14,17 +15,27 @@ const fetchMessagesController = async (req, res) => {
     return res.status(400).json({ message: "Please fill all fields" });
   }
 
-  const chatExist = await Chat.findOne({ email: email, _id: chatId });
+  const isAdmin = await User.findOne({ email: email, role: "admin" });
 
-  if (!chatExist) {
-    return res.status(400).json({ message: "Not Authozired" });
-  }
+  if (isAdmin) {
+    const messages = await Message.find({ chatId });
+    if (!messages) {
+      return res.status(400).json({ message: "No Messages found" });
+    }
+    res.status(200).json({ messages, message: "Messages found" });
+  } else {
+    const chatExist = await Chat.findOne({ email: email, _id: chatId });
 
-  const messages = await Message.find({ chatId });
-  if (!messages) {
-    return res.status(400).json({ message: "No Messages found" });
+    if (!chatExist) {
+      return res.status(400).json({ message: "Not Authozired" });
+    }
+
+    const messages = await Message.find({ chatId });
+    if (!messages) {
+      return res.status(400).json({ message: "No Messages found" });
+    }
+    res.status(200).json({ messages, message: "Messages found" });
   }
-  res.status(200).json({ messages, message: "Messages found" });
 };
 
 module.exports = fetchMessagesController;

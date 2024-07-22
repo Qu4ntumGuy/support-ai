@@ -15,6 +15,7 @@ const authUser = async (req, res, next) => {
       return res.status(401).send({ message: "Invalid Token" });
     }
     const user = await User.findOne({ _id: decoded.id });
+    // const admin = await User.findOne({ _id: decoded.id, role: "admin" });
 
     if (!user) {
       return res.status(401).send({ message: "Unauthorize token" });
@@ -22,9 +23,10 @@ const authUser = async (req, res, next) => {
 
     req.token = token;
     req.user = user;
+
     next();
   } catch (error) {
-    res.status(401).send({ message: "Please authenticate" });
+    res.status(401).send({ message: "Please authenticate by valid token" });
   }
 };
 
