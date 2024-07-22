@@ -92,7 +92,7 @@ function Message({ name, message }) {
             </div>
           </div>
           <div className="flex justify-start items-center rounded-md px-3">
-            <div>{formatText(message)}</div>
+            <div className="">{formatText(message)}</div>
           </div>
         </div>
       ) : (

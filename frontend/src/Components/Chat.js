@@ -41,7 +41,7 @@ function Chat({ chatId }) {
   return (
     <div className="">
       <div className="lg:max-w-2xl w-full xl:max-w-3xl mx-auto h-screen">
-        <div className="overflow-y-scroll scrollbar-hide justify-end h-full">
+        <div className="overflow-y-scroll scrollbar-hide justify-end h-full pb-20">
           {message.map((message) => (
             <Message
               key={message._id}
