@@ -14,11 +14,11 @@ app.get("/", (req, res) => {
   res.send("Backend is working");
 });
 
-// Connect to MongoDB
-
 app.all("*", (req, res) => {
   res.status(404).send("Endpoint not found");
 });
+
+// Connect to MongoDB
 
 connectDB();
 

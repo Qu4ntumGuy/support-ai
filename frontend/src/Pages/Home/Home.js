@@ -7,7 +7,7 @@ import axios from "axios";
 function Home() {
   const [chatId, setChatId] = React.useState("");
   const token = localStorage.getItem("token");
-  console.log(token);
+  // console.log(token);
   const navigate = useNavigate();
 
   const logoutHandler = () => {

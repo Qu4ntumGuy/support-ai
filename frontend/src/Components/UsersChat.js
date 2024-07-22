@@ -62,14 +62,16 @@ function UsersChat() {
 
   return (
     <div className="w-full bg-stone-100 h-96 overflow-y-auto rounded-lg mt-3">
-      {chats.map((chat) => (
-        <ChatRow
-          key={chat._id}
-          email={chat.email}
-          time={formatDate(chat.createdAt)}
-          chatId={chat._id}
-        />
-      ))}
+      {chats
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .map((chat) => (
+          <ChatRow
+            key={chat._id}
+            email={chat.email}
+            time={formatDate(chat.createdAt)}
+            chatId={chat._id}
+          />
+        ))}
       {/* <ChatRow />
       <ChatRow />
       <ChatRow />

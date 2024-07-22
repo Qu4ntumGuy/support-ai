@@ -11,16 +11,16 @@ function Sidebar() {
     navigate("/auth");
   };
 
-  const user = localStorage.getItem("user");
-  const userObj = JSON.parse(user);
+  const user = JSON.parse(localStorage.getItem("user"));
+  // console.log(user);
 
   return (
     <div className="p-3 md:flex md:flex-col h-screen hidden">
       <div className="p-2 text-xl hidden md:block font-semibold">
         Hii,
-        <span className="ml-1">{userObj.name}</span>
+        <span className="ml-1">{user?.name}</span>
       </div>
-      {userObj.role === "admin" && <UsersChat />}
+      {user?.role === "admin" && <UsersChat />}
       <div
         onClick={logoutHandler}
         className="mt-auto cursor-pointer bg-stone-50 mb-3 hover:bg-stone-100/90 flex items-center bottom-0 p-3 w-full rounded-lg "

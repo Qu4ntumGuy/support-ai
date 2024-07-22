@@ -21,6 +21,7 @@ async function googleOauthToken(code) {
     const data = res.data;
     return data;
   } catch (error) {
+    console.log("Hii there is an error", error);
     throw new Error(error);
   }
 }
@@ -36,6 +37,7 @@ async function getGoogleUser({ id_token, access_token }) {
     const data = res.data;
     return data;
   } catch (error) {
+    console.log("Hii fetching google user error", error);
     throw new Error(error);
   }
 }

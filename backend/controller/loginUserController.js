@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const qs = require("qs");
 const { googleOauthToken, getGoogleUser } = require("../services/user.service");
+const { json } = require("body-parser");
 
 const origin = "http://localhost:3000";
 
@@ -52,15 +53,15 @@ const loginUserController = async (req, res) => {
 const googleOauthHandler = async (req, res) => {
   const code = req.query.code;
 
+  let fetchedUser;
   try {
     const { id_token, access_token } = await googleOauthToken(code);
 
-    // console.log({ id_token, access_token });
+    // console.log(id_token, access_token);
 
     const hashedPass = await bcrypt.hash(access_token, 10);
 
     const googleUser = jwt.decode(id_token);
-
     // console.log(googleUser);
     if (!googleUser.email_verified) {
       return res
@@ -68,10 +69,14 @@ const googleOauthHandler = async (req, res) => {
         .send({ message: "Google Account is not verified" });
     }
 
+    console.log(googleUser.email);
+
     const isUserExist = await User.findOne({ email: googleUser.email });
 
+    let user;
+
     if (isUserExist) {
-      const user = await User.findOneAndUpdate(
+      user = await User.findOneAndUpdate(
         { email: isUserExist.email },
         {
           name: googleUser.given_name,
@@ -79,10 +84,11 @@ const googleOauthHandler = async (req, res) => {
           password: hashedPass,
           role: "user",
           picture: googleUser.picture,
-        }
+        },
+        { new: true }
       );
 
-      user.save();
+      await user.save();
 
       const updatedUser = await User.findOne({ email: googleUser.email });
 
@@ -94,17 +100,13 @@ const googleOauthHandler = async (req, res) => {
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: "5h",
       });
-      return res.status(200).json({
-        message: "User logged in successfully",
-        token,
-        user: {
-          id: isUserExist._id,
-          name: isUserExist.name,
-          email: isUserExist.email,
-          picture: isUserExist?.picture || null,
-          role: isUserExist.role,
-        },
-      });
+
+      fetchedUser = JSON.stringify(updatedUser);
+      // console.log(updatedUser);
+
+      return res.redirect(
+        `${origin}/auth/callback?token=${token}&user=${fetchedUser}`
+      );
     } else {
       const user = new User({
         name: googleUser.given_name,
@@ -125,17 +127,26 @@ const googleOauthHandler = async (req, res) => {
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: "5h",
       });
-      return res.status(200).json({
-        message: "User logged in successfully",
-        token,
-        user: {
+      return res.redirect(
+        `${origin}/auth/callback?token=${token}&user=${{
           id: newUserExist._id,
           name: newUserExist.name,
           email: newUserExist.email,
           picture: newUserExist?.picture || null,
           role: newUserExist.role,
-        },
-      });
+        }}`
+      );
+      // return res.status(200).json({
+      //   message: "User logged in successfully",
+      //   token,
+      //   user: {
+      //     id: newUserExist._id,
+      //     name: newUserExist.name,
+      //     email: newUserExist.email,
+      //     picture: newUserExist?.picture || null,
+      //     role: newUserExist.role,
+      //   },
+      // });
     }
   } catch (error) {
     console.log("Failed to authorize Google User", error);

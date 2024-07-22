@@ -4,6 +4,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import getGoogleOAuthUrl from "../../utils/getGoogleUrl";
+import google from "../../Assets/google.png";
 
 function Auth() {
   const [email, setEmail] = React.useState("");
@@ -211,7 +212,7 @@ function Auth() {
               </button>
             </form>
             {!loading && (
-              <div className="flex mt-3 ml-1">
+              <div className="flex mt-3">
                 <div>Don&apos;t have an account? </div>
                 <div
                   onClick={switchHandler}
@@ -221,7 +222,16 @@ function Auth() {
                 </div>
               </div>
             )}
-            <a href={getGoogleOAuthUrl()}>Login with Google</a>
+            <div className="w-full flex items-center justify-center my-2 py-3">
+              <div className="p-2 border rounded-lg flex justify-center items-center">
+                <div className="mr-1">
+                  <img src={google} alt="google" height={20} width={20} />
+                </div>
+                <a className="" href={getGoogleOAuthUrl()}>
+                  Login with Google
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       )}

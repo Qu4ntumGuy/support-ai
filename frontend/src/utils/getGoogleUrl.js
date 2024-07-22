@@ -13,11 +13,11 @@ function getGoogleOAuthUrl() {
     ].join(" "),
   };
 
-  console.log(options);
+  // console.log(options);
 
   const query = new URLSearchParams(options).toString();
 
-  console.log(query);
+  // console.log(query);
 
   return `${googleOAuthUrl}${query}`;
 }
