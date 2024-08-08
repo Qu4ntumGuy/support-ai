@@ -20,3 +20,9 @@ cd ../frontend
 npm i
 npm start
 ```
+
+## About the project
+
+This is AI assistant which uses the Gemini API key.
+
+
